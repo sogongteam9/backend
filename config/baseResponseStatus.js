@@ -8,6 +8,8 @@ module.exports = {
     TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": 401, "message":"JWT 토큰 검증 실패" },
 
     //Request error
+    CATEGORY_NOT_EXIST:{ "isSuccess": false, "code": 400, "message":"카테고리가 없습니다" },
+
     SIGNUP_EMAIL_EMPTY : { "isSuccess": false, "code": 400, "message":"이메일을 입력해주세요" },
     SIGNUP_EMAIL_LENGTH : { "isSuccess": false, "code": 400, "message":"이메일은 30자리 미만으로 입력해주세요." },
     SIGNUP_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 400, "message":"이메일을 형식을 정확하게 입력해주세요." },
@@ -48,6 +50,5 @@ module.exports = {
     //Connection, Transaction 등의 서버 오류
     DB_ERROR : { "isSuccess": false, "code": 500, "message": "데이터 베이스 에러"},
     SERVER_ERROR : { "isSuccess": false, "code": 500, "message": "서버 에러"},
- 
- 
+
 }

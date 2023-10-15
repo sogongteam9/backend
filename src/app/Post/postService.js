@@ -4,10 +4,10 @@ const {pool} =require("../../../config/database");
 const baseResponseStatus = require("../../../config/baseResponseStatus");
 
 
-exports.createFood = async function(title, content, price, star, sell){
+exports.createFood = async function(date, title, category, content, price, star, sell){
     try{
         const connetion = await pool.getConnection(async (conn) => conn);
-        await postDao.createFood(connetion, title, content, price, star, sell);
+        await postDao.createFood(connetion, date, title, category, content, price, star, sell);
 
         connection.release();
     }catch(err){
@@ -16,10 +16,10 @@ exports.createFood = async function(title, content, price, star, sell){
 
 }
 
-exports.updateFood = async function(id, title, content, price, star, sell){
+exports.updateFood = async function(id, date, title, content, price, star, sell){
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        await postDao.updateFood(connection, id, title, content, price, star, sell); //정보를 데이터베이스에 삽입
+        await postDao.updateFood(connection, id, date, title, content, price, star, sell); //정보를 데이터베이스에 삽입
         
         connection.release(); //데이터베이스 연결 해제(꼭 해줘야 됨)
         
