@@ -2,8 +2,6 @@ const { pool } = require("../../../config/database");
 
 const userDao = require("./userDao");
 
-// Provider: Read 비즈니스 로직 처리
-
 
 exports.emailCheck = async function (email) {
   const connection = await pool.getConnection(async (conn) => conn);
@@ -21,7 +19,6 @@ exports.nicknameCheck = async function (nickname) {
   return nicknameCheckResult;
 };
 
-// Provider: Read 비즈니스 로직 처리
 exports.loginCheck = async function (selectUserPasswordParams) { //사용자아이디와 암호화된 비번 포함하는 배열
   const connection = await pool.getConnection(async (conn) => conn);
   const passwordCheckResult = await userDao.loginCheck(
