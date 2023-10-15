@@ -1,28 +1,38 @@
 const { getCategory } = require("./postProvider");
 
-//음식 생성
-async function createFood(connection, title, content, price, star, sell){
-    const date = new Date();
-    const formattedTime = date.toLocaleString();
-    const createFoodQuery = `
-        INSERT INTO food(date, title, content, price, star, sell)
-        VALUES ('${formattedTime}',?,?,?,?,?);
+
+//카테고리 아이디를 타이틀로 바꾸기
+async function changeTitle2Id(connection, category){
+    const changeTitle2IdQuery = `
+        SELECT id
+        FROM category
+        WHERE title=?
     `;
 
-    const createFoodRow = await connection.query(createFoodQuery, [title, content, price, star, sell]);
+    const changeId2TitleRow = await connection.query(changeTitle2Id, category);
+    
+    return changeId2TitleRow;
+}
+
+//음식 생성
+async function createFood(connection, date, title, category, content, price, star, sell){
+    const createFoodQuery = `
+        INSERT INTO food(date, title, category, content, price, star, sell)
+        VALUES ('?', ?, ?,?,?,?,?);
+    `;
+
+    const createFoodRow = await connection.query(createFoodQuery, [ date, title, category, content, price, star, sell]);
     
     return createFoodRow;
 }
 
-//상세정보 - 클래스 가져오기
-async function getCategory(connection, id){
-    const getCategoryQuery = `
-        SELECT *
-        FROM category
-        WHERE id = ?`;
-    const getCategoryRow = await connection.query(getCategoryQuery, id);
-
-    return getCategoryRow[0]; 
+//음식이 존재하는지
+async function getFoodIsExist(connection, id) {
+    const result = await connection.query(
+      `SELECT * FROM food  WHERE id=?`,
+        id
+    );
+    return result[0];
 }
 
 //상세정보 - 클래스 가져오기
@@ -32,27 +42,28 @@ async function getFood(connection, id){
         FROM food
         WHERE id = ?`;
     const getFoodRow = await connection.query(getFoodQuery, id);
-    //카테고리를 음식에서 가져올건지 아니면 카테고리에서 가지고 올건지
+
     //리뷰도 가지고 와야해
 
     return getFoodRow[0]; 
 }
 
-async function Foodlist(connection){
+
+async function Foodlist(connection, categoryid){
     const FoodlistQuery = `
         SELECT *
         FROM food
+        WHERE category=${categoryid}
         `;
     const FoodlistRow = await connection.query(FoodlistQuery);
     return FoodlistRow;
 }
 
-async function updateFood(connection, id, title, content, price, star, sell) { 
-    const date = new Date();
-    const formattedTime = date.toLocaleString();
+
+async function updateFood(connection, id, date, title, content, price, star, sell) { 
     const updateFoodQuery = `
         UPDATE food
-            SET date = '${formattedTime}',
+            SET date = '?',
             title = ?,
             content = ?,
             price = ?,
@@ -62,7 +73,7 @@ async function updateFood(connection, id, title, content, price, star, sell) {
     `;
     const updateFoodRow = await connection.query( 
         updateFoodQuery,
-        [title, content, price, star, sell] 
+        [date, title, content, price, star, sell] 
     );
 
     return updateFoodRow; 
@@ -78,5 +89,5 @@ async function deleteFood(connection,id){
 
 
 module.exports = {
-    createFood, getFood,Foodlist,updateFood,deleteFood
+    changeTitle2Id, createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood
 };
