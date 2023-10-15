@@ -38,6 +38,9 @@ module.exports = {
 
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 400, "message": "회원 상태값을 입력해주세요" },
 
+    COMMENT_POSTID_EMPTY : { "isSuccess": false, "code": 400, "message": "게시글 id값을 입력해주세요" },
+
+
     // Response error
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 400, "message":"중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME : { "isSuccess": false, "code": 400, "message":"중복된 닉네임입니다." },

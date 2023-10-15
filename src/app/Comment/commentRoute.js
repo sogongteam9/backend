@@ -7,5 +7,5 @@ module.exports = function(app){
     app.post('/app/comments/:postId',jwtMiddleware,imageUploader_comment.single("image"),comment.createComment);
 
     // 후기 댓글 목록 출력
-    // app.get('/app/comments/:postId',comment.getCommentList);
+    app.get('/app/comments/:postId',comment.getCommentList);
 };

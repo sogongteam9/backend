@@ -13,7 +13,19 @@ async function createComment(connection,content,star,imageURL,date,userid,postid
   return id;
 }
 
+// 게시글 별 모든 댓글 조회
+async function selectComment(connection,postid) {
+  const selectCommentListQuery = `
+                SELECT content,star,image,date
+                FROM comment
+                WHERE foodid = ?;
+                `;
+  const [commentRows] = await connection.query(selectCommentListQuery,postid);
+  return commentRows;
+}
+
+
 
 module.exports = {
-  createComment
+  createComment, selectComment
 }
