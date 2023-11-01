@@ -7,7 +7,7 @@ const moment = require("moment");
 const regexEmail = require("regex-email");
 const {emit} = require("nodemon");
 
-// 게시글 작성
+// 댓글 작성
 exports.createComment = async function (req, res){
   const {
     content,star
@@ -42,7 +42,7 @@ exports.createComment = async function (req, res){
   return res.send(response);
 };
 
-// 전체 게시글 출력 
+// 전체 댓글 출력 
 exports.getCommentList  = async function (req, res){
   const postid = req.params.postId;
 
@@ -50,4 +50,34 @@ exports.getCommentList  = async function (req, res){
 
   const commentListResult = await commentProvider.getCommentList(postid);
     return res.send(response(baseResponse.SUCCESS, commentListResult));
+};
+
+// 댓글 수정
+exports.patchComment = async function (req, res) {
+
+  // jwt - userId, path variable :userId
+  
+
+  const userid = req.verifiedToken.userId
+  const {content,star} = await req.body;
+  const postid=req.params.postId; // 게시글 id
+  const commentid=req.params.commentId; // 댓글 id
+  
+  // 이미지
+  var imageURL;
+    if (req.file) {
+        imageURL = req.file.location;
+    } else {
+        imageURL = null;
+    }
+
+   // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
+  const date = await moment().format('YYYY-MM-DD HH:mm:ss');
+
+  if(!content || !star){
+    return res.send("필수정보 누락"); 
+  }
+
+      const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,postid,commentid)
+      return res.send(editCommentInfo);
 };

@@ -8,6 +8,8 @@ const {errResponse} = require("../../../config/response");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const {connect} = require("http2");
+
+//댓글 작성
 exports.createComment = async function (
   content,star,imageURL,date,userid,postid
 ) {
@@ -23,4 +25,20 @@ exports.createComment = async function (
   }catch(err){
     return errResponse(baseResponse.DB_ERROR);
   }
-}
+};
+
+//댓글 수정
+exports.editComment = async function (content,star,imageURL,date,userid,postid,commentid) {
+  try {
+      console.log(commentid)
+
+      const connection = await pool.getConnection(async (conn) => conn);
+      const editUserResult = await commentDao.updateCommentInfo(connection, content,star,imageURL,date,userid,postid,commentid)
+      connection.release();
+
+      return response(baseResponse.SUCCESS);
+
+  } catch (err) {
+      return errResponse(baseResponse.DB_ERROR);
+  }
+};

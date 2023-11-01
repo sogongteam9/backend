@@ -8,4 +8,11 @@ module.exports = function(app){
 
     // 후기 댓글 목록 출력
     app.get('/app/comments/:postId',comment.getCommentList);
+
+    // 후기 댓글 수정
+    app.patch('/app/comments/:postId/:commentId', jwtMiddleware, comment.patchComment);
+
+    // 후기 댓글 삭제
+
+    // 별점 평균 반환
 };

@@ -24,8 +24,19 @@ async function selectComment(connection,postid) {
   return commentRows;
 }
 
+//회원 정보 수정
+async function updateCommentInfo(connection, content,star,imageURL,date,userid,postid,commentid) {
+  console.log(content,star,imageURL,date,userid,postid,commentid)
+  const updateCommentQuery = `
+  UPDATE comment
+  SET content = ?, star = ?, image = ?, date = ?
+  WHERE userid = ? AND foodid = ? AND id = ?;`;
+  const updateCommentRow = await connection.query(updateCommentQuery, [content,star,imageURL,date,userid,postid,commentid]);
+  return updateCommentRow[0];
+}
+
 
 
 module.exports = {
-  createComment, selectComment
+  createComment, selectComment, updateCommentInfo
 }
