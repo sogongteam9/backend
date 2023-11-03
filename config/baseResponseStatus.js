@@ -9,6 +9,7 @@ module.exports = {
 
     //Request error
     CATEGORY_NOT_EXIST:{ "isSuccess": false, "code": 400, "message":"카테고리가 없습니다" },
+    FOOD_POST_REQUIRED_INFO_MISSING_ERROR:{ "isSuccess": false, "code": 400, "message":"필수 정보가 누락 되었습니다. 제목과 내용을 모두 입력해 주세요." },
 
     SIGNUP_EMAIL_EMPTY : { "isSuccess": false, "code": 400, "message":"이메일을 입력해주세요" },
     SIGNUP_EMAIL_LENGTH : { "isSuccess": false, "code": 400, "message":"이메일은 30자리 미만으로 입력해주세요." },
@@ -25,6 +26,7 @@ module.exports = {
     SIGNIN_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 400, "message":"이메일을 형식을 정확하게 입력해주세요." },
     SIGNIN_PASSWORD_EMPTY : { "isSuccess": false, "code": 400, "message": "비밀번호를 입력 해주세요." },
 
+    USER_IS_NOT_EXPERT: { "isSuccess": false, "code": 400, "message": "전문가가 아니기 때문에 포스트를 올릴 수 없습니다." },
     USER_USERID_EMPTY : { "isSuccess": false, "code": 400, "message": "userId를 입력해주세요." },
     USER_USERID_NOT_EXIST : { "isSuccess": false, "code": 404, "message": "해당 회원이 존재하지 않습니다." },
 
@@ -42,6 +44,11 @@ module.exports = {
 
 
     // Response error
+    FIND_USER_ERROR : { "isSuccess": false, "code": 400, "message":"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요." },
+    POST_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"해당 게시물이 없습니다." },
+    FOOD_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"음식 제고가 없습니다." },
+    COUNT_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"수량을 입력해 주세요." },
+
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 400, "message":"중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME : { "isSuccess": false, "code": 400, "message":"중복된 닉네임입니다." },
 
