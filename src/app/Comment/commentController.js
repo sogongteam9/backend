@@ -81,3 +81,37 @@ exports.patchComment = async function (req, res) {
       const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,postid,commentid)
       return res.send(editCommentInfo);
 };
+
+
+// 댓글 삭제
+exports.deleteComment= async function(req,res){
+  
+  const user_id = req.verifiedToken.userId
+  const postid=req.params.postId; // 게시글 id
+  const commentid=req.params.commentId; // 댓글 id
+  
+  // 이미지
+  var imageURL;
+    if (req.file) {
+        imageURL = req.file.location;
+    } else {
+        imageURL = null;
+    }
+
+  // 댓글이 있는지 확인 TODO : 에러 작성
+  const isCommentExist = await commentProvider.getCommentIsExists(commentid);
+  if(isCommentExist.length <=0){
+      return res.send(baseResponse.COMMENT_NOT_EXIST);
+  }
+
+  //내가 쓴 댓글인지 확인 TODO : 에러 작성
+  const writer = await commentProvider.getCommentWriter(commentid);
+  console.log(writer[0].userid);
+  if(writer[0].userid!=user_id){
+    return res.send(baseResponse.COMMENT_DELETE_ERROR);
+  }
+
+  //삭제
+  const result = await commentService.deleteComment(commentid);
+  return res.send(result);
+};

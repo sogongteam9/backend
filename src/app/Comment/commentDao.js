@@ -35,8 +35,34 @@ async function updateCommentInfo(connection, content,star,imageURL,date,userid,p
   return updateCommentRow[0];
 }
 
+// 댓글 있는지 확인
+async function getCommentIsExists(connection,commentid){
+  const result = await connection.query(
+    `SELECT * FROM comment WHERE id = ?`,
+    [commentid]
+  );
+  return result[0];
+}
+
+//댓글 작성자인지 확인
+async function getCommentWriter(connection,commentid){
+  const result = await connection.query(
+    `SELECT userid FROM comment WHERE id = ?`,[commentid]
+  )
+  return result[0];
+}
+
+//댓글 삭제
+async function deleteComment(connection,commentid){
+  const result = await connection.query(
+    `DELETE FROM comment WHERE id = ?`,
+    [commentid]
+  )
+  return result;
+}
+
 
 
 module.exports = {
-  createComment, selectComment, updateCommentInfo
+  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment
 }

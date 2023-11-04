@@ -39,6 +39,8 @@ module.exports = {
     USER_STATUS_EMPTY : { "isSuccess": false, "code": 400, "message": "회원 상태값을 입력해주세요" },
 
     COMMENT_POSTID_EMPTY : { "isSuccess": false, "code": 400, "message": "게시글 id값을 입력해주세요" },
+    COMMENT_NOT_EXIST : { "isSuccess": false, "code": 400, "message": "댓글이 존재하지 않습니다" },
+    COMMENT_DELETE_ERROR : { "isSuccess": false, "code": 400, "message": "댓글 작성자가 아닙니다." },
 
 
     // Response error

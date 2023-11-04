@@ -42,3 +42,15 @@ exports.editComment = async function (content,star,imageURL,date,userid,postid,c
       return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+// 댓글 삭제
+exports.deleteComment = async function (commentid){
+  try{
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await commentDao.deleteComment(connection,commentid);
+    connection.release();
+    return response(baseResponse.SUCCESS);
+  }catch(err){
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};
