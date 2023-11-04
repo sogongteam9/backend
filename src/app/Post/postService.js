@@ -4,10 +4,10 @@ const {pool} =require("../../../config/database");
 const baseResponseStatus = require("../../../config/baseResponseStatus");
 
 
-exports.createFood = async function(date, title, category, content, price, star, sell){
+exports.createFood = async function(userIdx, title, content, image, price, star, sell, getCategoryId, date){
     try{
         const connetion = await pool.getConnection(async (conn) => conn);
-        await postDao.createFood(connetion, date, title, category, content, price, star, sell);
+        await postDao.createFood(connetion, userIdx, title, content, image, price, star, sell, getCategoryId, date);
 
         connection.release();
     }catch(err){

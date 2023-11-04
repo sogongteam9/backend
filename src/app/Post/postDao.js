@@ -15,13 +15,13 @@ async function changeTitle2Id(connection, category){
 }
 
 //음식 생성
-async function createFood(connection, date, title, category, content, price, star, sell){
+async function createFood(connection, userIdx, title, content, image, price, star, sell, getCategoryId, date){
     const createFoodQuery = `
-        INSERT INTO food(date, title, category, content, price, star, sell)
-        VALUES ('?', ?, ?,?,?,?,?);
+        INSERT INTO food(userid, title, content, image, price, star, sell, getCategoryId, date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-    const createFoodRow = await connection.query(createFoodQuery, [ date, title, category, content, price, star, sell]);
+    const createFoodRow = await connection.query(createFoodQuery, [ userIdx, title, content, image, price, star, sell, getCategoryId, date]);
     
     return createFoodRow;
 }
@@ -60,20 +60,23 @@ async function Foodlist(connection, categoryid){
 }
 
 
-async function updateFood(connection, id, date, title, content, price, star, sell) { 
+async function updateFood(connection, id, userIdx, title, content, image, price, star, sell, getCategoryId, date) { 
     const updateFoodQuery = `
         UPDATE food
-            SET date = '?',
+            SET userid = ?
+            date = ?,
             title = ?,
             content = ?,
             price = ?,
             star =?,
-            sell = ?
+            sell = ?,
+            image = ?,
+            categoryid = ?
         WHERE id = ${id};
     `;
     const updateFoodRow = await connection.query( 
         updateFoodQuery,
-        [date, title, content, price, star, sell] 
+        [userIdx, title, content, image, price, star, sell, getCategoryId, date] 
     );
 
     return updateFoodRow; 
