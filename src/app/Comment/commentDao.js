@@ -16,9 +16,10 @@ async function createComment(connection,content,star,imageURL,date,userid,postid
 // 게시글 별 모든 댓글 조회
 async function selectComment(connection,postid) {
   const selectCommentListQuery = `
-                SELECT content,star,image,date
-                FROM comment
-                WHERE foodid = ?;
+                SELECT u.nickname, c.content, c.star, c.image, c.date
+                FROM comment c
+                INNER JOIN user u ON c.userid = u.id
+                WHERE c.foodid = ?;
                 `;
   const [commentRows] = await connection.query(selectCommentListQuery,postid);
   return commentRows;
