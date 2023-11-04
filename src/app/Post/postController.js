@@ -62,7 +62,7 @@ exports.getFood = async function (req, res){
     var id = req.params.id; 
 
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-    const userIdx = await userProvider.getIdx_by_user_id(req.verifiedToken.userId);
+    const userIdx = await userProvider.check(req.verifiedToken.userId);
 
     if(!userIdx){
         return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
@@ -86,16 +86,14 @@ exports.foodUpdate= async function (req, res) {
     image=req.files.location
 
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-    const userIdx = await userProvider.getIdx_by_user_id(req.verifiedToken.userId);
+    const userIdx = req.verifiedToken.userId
     if(!userIdx){
-        await deleteImages(req.files);
         return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
     }
 
     //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
     const userIsExpert = await userProvider.getIsExpert(userIdx);
     if(!userIsExpert){
-        await deleteImages(req.files);
         return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 클래스를 올릴 수 없습니다.",
     }
 
@@ -140,6 +138,7 @@ exports.foodDelete = async function (req, res){
 
 // 장바구니 수량 받기
 exports.countFood  = async function (req, res){ 
+    var id = req.params.id;
     var countFood = await req.body;
 
     // food 있는지 확인
