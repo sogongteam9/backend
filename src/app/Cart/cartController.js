@@ -8,13 +8,14 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const { response, errResponse } = require("../../../config/response");
 const {deleteImageFromS3} = require("../../../config/s3Uploader");
 const multer = require("multer");
-const baseResponse = require("../../../config/baseResponseStatus");
 
 
   //장바구니 추가하기
 exports.addCart = async function(req,res){
     const foodid=req.params.id;
-    const count = await postController.countFood(id);
+    const count = await req.body;
+    console.log(foodid, count);
+    
     if(!count){
         return res.send(baseResponse.COUNT_NOT_EXIST); //"수량을 입력해 주세요"
     }
@@ -35,7 +36,7 @@ exports.addCart = async function(req,res){
 }
 
 // 장바구니 내역보기
-exports.cartList = async function (req, res) {
+exports.getcartList = async function (req, res) {
     // userid 가져오기
     const userIdx = req.verifiedToken.userId;
     if (!userIdx) {
@@ -47,7 +48,7 @@ exports.cartList = async function (req, res) {
 };
 
 // 장바구니 삭제하기
-exports.deleteCart = async function (req, res) {
+exports.cartDelete = async function (req, res) {
     var id = req.params.id;
 
     // userid 가져오기
@@ -61,7 +62,7 @@ exports.deleteCart = async function (req, res) {
 };
 
 // 장바구니 가격 계산하기
-exports.calcCart = async function (req, res) {
+exports.getcalcCart = async function (req, res) {
     // userid 가져오기
     const userIdx = req.verifiedToken.userId;
     if (!userIdx) {
