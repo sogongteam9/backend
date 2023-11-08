@@ -6,7 +6,6 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const { response, errResponse } = require("../../../config/response");
 const {deleteImageFromS3} = require("../../../config/s3Uploader");
 const multer = require("multer");
-const baseResponse = require("../../../config/baseResponseStatus");
 
 exports.foodCreate = async function(req,res){
     
@@ -86,15 +85,16 @@ exports.foodUpdate= async function (req, res) {
     image=req.files.location
 
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-    const userIdx = req.verifiedToken.userId
+    const userIdx = req.verifiedToken.userId;
     if(!userIdx){
-        return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
+        await deleteImages(req.files);
+        return res.send(baseResponse.USER_USERID_NOT_EXIST); //"사용자가 없습니다."
     }
 
-    //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
-    const userIsExpert = await userProvider.getIsExpert(userIdx);
-    if(!userIsExpert){
-        return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 클래스를 올릴 수 없습니다.",
+     //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
+    if(userIdx != 1){
+        await deleteImages(req.files);
+        return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 포스트를 올릴 수 없습니다.",
     }
 
     // 필수 정보가 누락된 경우
@@ -116,18 +116,18 @@ exports.foodUpdate= async function (req, res) {
 
 exports.foodDelete = async function (req, res){ 
     var id = req.params.id;
+
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-    const userIdx = await userProvider.getIdx_by_user_id(req.verifiedToken.userId);
+    const userIdx = req.verifiedToken.userId;
     if(!userIdx){
         await deleteImages(req.files);
-        return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
+        return res.send(baseResponse.USER_USERID_NOT_EXIST); //"사용자가 없습니다."
     }
 
-    //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
-    const userIsExpert = await userProvider.getIsExpert(userIdx);
-    if(!userIsExpert){
+     //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
+    if(userIdx != 1){
         await deleteImages(req.files);
-        return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 클래스를 올릴 수 없습니다.",
+        return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 포스트를 올릴 수 없습니다.",
     }
 
     const response = await postService.deleteFood(id);
@@ -135,18 +135,3 @@ exports.foodDelete = async function (req, res){
     return res.send(response);
 }
 
-
-// 장바구니 수량 받기
-exports.countFood  = async function (req, res){ 
-    var id = req.params.id;
-    var countFood = await req.body;
-
-    // food 있는지 확인
-    const isExist = await postProvider.getFoodIsExist(id);
-    if(isExist.length <=0){
-        return res.send(baseResponse.FOOD_NOT_EXIST); //음식 제고가 없습니다.
-    }
-
-    const result = await countFood;
-    return res.send(result);
-};

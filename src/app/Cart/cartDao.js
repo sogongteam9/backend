@@ -5,7 +5,7 @@ async function addCart(connection, foodid, userid, count){
     INSERT INTO cart(userid, foodid, count)
     VALUES (?, ?, ?); 
     `
-    const addCartRow = await connection.query(addCartQuery, [ foodid, userid, count]);
+    const addCartRow = await connection.query(addCartQuery, [ userid, foodid, count]);
 
     return addCartRow;
 }
@@ -18,7 +18,7 @@ async function cartList(connection, userid){
         WHERE userid = ?`;
     const getCartListRow = await connection.query(getCartListQuery, userid);
 
-    return getCartListRow;
+    return getCartListRow[0];
 }
 
 // 장바구니 가격 계산하기
@@ -42,9 +42,10 @@ async function deleteCart(connection,id){
     return deleteCartRow; 
 }
 
+//카트에 존재하는지 확인
 async function getCartIsExist(connection, userId, foodid) {
     const result = await connection.query(
-      `SELECT * FROM cart WHERE userud = ? and foodid = ? `,
+      `SELECT * FROM cart WHERE userid = ? and foodid = ? `,
         [foodid, userId]
     );
     return result[0];
