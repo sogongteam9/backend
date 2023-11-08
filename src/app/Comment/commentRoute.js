@@ -16,5 +16,5 @@ module.exports = function(app){
     // 후기 댓글 삭제
     app.get("/app/comments/:postId/:commentId",jwtMiddleware, comment.deleteComment);
 
-    // 별점 평균 반환
+    
 };
