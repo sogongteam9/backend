@@ -6,7 +6,7 @@ module.exports = function(app){
     //cartList 보기
     app.get('/app/cartlist',jwtMiddleware, cart.getcartList);
     //cart 삭제하기
-    app.delete('/app/cartdelete/:id',jwtMiddleware, cart.cartDelete);
+    app.delete('/app/deletecart/:id',jwtMiddleware, cart.cartDelete);
     //cart 계산하기
     app.get('/app/calcCart',jwtMiddleware, cart.getcalcCart);
 }

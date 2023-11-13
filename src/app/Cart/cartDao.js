@@ -18,7 +18,7 @@ async function cartList(connection, userid){
         WHERE userid = ?`;
     const getCartListRow = await connection.query(getCartListQuery, userid);
 
-    return getCartListRow[0];
+    return getCartListRow;
 }
 
 // 장바구니 가격 계산하기
