@@ -98,13 +98,13 @@ exports.deleteComment= async function(req,res){
         imageURL = null;
     }
 
-  // 댓글이 있는지 확인 TODO : 에러 작성
+  // 댓글이 있는지 확인 
   const isCommentExist = await commentProvider.getCommentIsExists(commentid);
   if(isCommentExist.length <=0){
       return res.send(baseResponse.COMMENT_NOT_EXIST);
   }
 
-  //내가 쓴 댓글인지 확인 TODO : 에러 작성
+  //내가 쓴 댓글인지 확인
   const writer = await commentProvider.getCommentWriter(commentid);
   console.log(writer[0].userid);
   if(writer[0].userid!=user_id){
@@ -114,4 +114,14 @@ exports.deleteComment= async function(req,res){
   //삭제
   const result = await commentService.deleteComment(commentid);
   return res.send(result);
+};
+
+// 마이페이지 - 자신이 작성한 댓글 확인
+exports.myComment  = async function (req, res){
+
+  // 사용자 user_id 로 id 가져오기 -> 변수에 저장
+  const userid=req.params.userId;
+
+  const commentListResult = await commentProvider.getMyComment(userid);
+    return res.send(response(baseResponse.SUCCESS, commentListResult));
 };

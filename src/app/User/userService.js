@@ -88,7 +88,7 @@ exports.postSignIn = async function (email, password) {
     }
   };
 
-
+// 회원 정보 수정
 exports.editUser = async function (id, nickname, phonenum, currentpassword, newpassword) {
     try {
         console.log(id)

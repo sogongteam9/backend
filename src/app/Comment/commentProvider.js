@@ -42,3 +42,12 @@ exports.getStarAvg = async function(postid){
   connection.release();
   return result;
 }
+
+//마이페이지 - 내 댓글 출력
+exports.getMyComment = async function (userid) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const commentListResult = await commentDao.selectMyComment(connection,userid);
+  connection.release();
+
+  return commentListResult;
+};

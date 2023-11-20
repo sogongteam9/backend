@@ -25,7 +25,7 @@ async function selectComment(connection,postid) {
   return commentRows;
 }
 
-//회원 정보 수정
+//댓글 수정
 async function updateCommentInfo(connection, content,star,imageURL,date,userid,postid,commentid) {
   console.log(content,star,imageURL,date,userid,postid,commentid)
   const updateCommentQuery = `
@@ -84,7 +84,19 @@ async function getStarCount(connection,postid){
   return result[0];
 }
 
+// 마이페이지 - 내가 쓴 댓글 확인
+async function selectMyComment(connection, userid) {
+  const selectCommentListQuery = `
+                SELECT u.nickname, c.content, c.star, c.image, c.date
+                FROM comment c
+                INNER JOIN user u ON c.userid = u.id
+                WHERE c.userid = ${userid};
+                `;
+  const [commentRows] = await connection.query(selectCommentListQuery);
+  return commentRows;
+}
+
 
 module.exports = {
-  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarAvg, getStarCount
+  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarAvg, getStarCount, selectMyComment
 }

@@ -16,5 +16,8 @@ module.exports = function(app){
     // 후기 댓글 삭제
     app.get("/app/comments/:postId/:commentId",jwtMiddleware, comment.deleteComment);
 
+    // 마이페이지 - 자신이 작성한 댓글 목록 확인
+    app.get("/app/mypage/:userId",jwtMiddleware, comment.myComment)
+
     
 };

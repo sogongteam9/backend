@@ -8,5 +8,4 @@ secret.js
 config/database.js
 config/secret.js
 s3.js
-s3Uploader.js
 config/s3.js

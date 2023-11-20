@@ -18,7 +18,7 @@ async function getCategory(connection, id){
         WHERE id = ?`;
     const getCategoryRow = await connection.query(getCategoryQuery, id);
 
-    return getCategoryRow;
+    return getCategoryRow[0];
 }
 
 
