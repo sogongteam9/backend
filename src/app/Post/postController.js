@@ -125,5 +125,15 @@ exports.foodDelete = async function (req, res){
     const response = await postService.deleteFood(id);
 
     return res.send(response);
-}
+};
+
+// 검색
+exports.postSearch = async function (req, res) {
+    const word = req.query.word;
+    if (!word) {
+      return res.send(baseResponse.SEARCH_NULL);
+    }
+    const result = await postProvider.search(word);
+    return res.send(response(baseResponse.SUCCESS, result));
+  };
 

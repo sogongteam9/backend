@@ -34,6 +34,14 @@ exports.getFoodIsExist = async function (id) {
     return result;
 }
 
+// 검색
+exports.search = async function (word) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await postDao.search(connection, word);
+    connection.release();
+    return result;
+  };
+
 
 
 
