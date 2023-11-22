@@ -15,4 +15,6 @@ module.exports = function(app){
     app.put('/app/foodupdate/:id', jwtMiddleware,  imageUploader_post.single("image"), post.foodUpdate);
     //food 삭제
     app.delete('/app/fooddelete/:id', jwtMiddleware, post.foodDelete);
+    // 검색
+    app.get("/app/post/search", post.postSearch);
 }

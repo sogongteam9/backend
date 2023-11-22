@@ -94,7 +94,21 @@ async function deleteFood(connection,id){
     return deleteFoodRow; 
 }
 
+// 검색
+async function search(connection, word) {
+    // pose_id 불러오기
+    const query = `
+      SELECT DISTINCT *
+      FROM food
+      WHERE title LIKE ? OR content LIKE ?
+    `;
+    const searchTerm = `%${word}%`; // '%'는 와일드카드로서 어떤 문자열도 매칭되도록 해줍니다.
+    const [poseid_result] = await connection.query(query, [searchTerm,searchTerm]);
+    console.log(poseid_result);
+    return poseid_result
+  }
+
 
 module.exports = {
-    createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood, getStarAvg 
+    createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood, getStarAvg, search
 };
