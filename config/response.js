@@ -14,5 +14,5 @@ const errResponse = ({isSuccess, code, message}) => {
         message: message
       }
 };
- 
+
 module.exports = { response, errResponse };

@@ -50,6 +50,7 @@ module.exports = {
     POST_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"해당 게시물이 없습니다." },
     FOOD_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"음식 제고가 없습니다." },
     COUNT_NOT_EXIST : { "isSuccess": false, "code": 400, "message":"수량을 입력해 주세요." },
+    CART_ALREADY_EXIST : { "isSuccess": false, "code": 400, "message":"이미 음식이 카트에 담겨있습니다." },
 
     SIGNUP_REDUNDANT_EMAIL : { "isSuccess": false, "code": 400, "message":"중복된 이메일입니다." },
     SIGNUP_REDUNDANT_NICKNAME : { "isSuccess": false, "code": 400, "message":"중복된 닉네임입니다." },

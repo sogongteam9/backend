@@ -1,27 +1,14 @@
 const { getCategory } = require("./postProvider");
 
 
-//카테고리 아이디를 타이틀로 바꾸기
-async function changeTitle2Id(connection, category){
-    const changeTitle2IdQuery = `
-        SELECT id
-        FROM category
-        WHERE title=?
-    `;
-
-    const changeId2TitleRow = await connection.query(changeTitle2Id, category);
-    
-    return changeId2TitleRow;
-}
-
 //음식 생성
-async function createFood(connection, userIdx, title, content, image, price, star, sell, getCategoryId, date){
+async function createFood(connection, userIdx, title, content, image, price, star, sell, categoryid){
     const createFoodQuery = `
-        INSERT INTO food(userid, title, content, image, price, star, sell, getCategoryId, date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO food(userid, title, content, image, price, star, sell, categoryid)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-    const createFoodRow = await connection.query(createFoodQuery, [ userIdx, title, content, image, price, star, sell, getCategoryId, date]);
+    const createFoodRow = await connection.query(createFoodQuery, [ userIdx, title, content, image, price, star, sell, categoryid]);
     
     return createFoodRow;
 }
@@ -53,30 +40,29 @@ async function Foodlist(connection, categoryid){
     const FoodlistQuery = `
         SELECT *
         FROM food
-        WHERE category=${categoryid}
+        WHERE categoryid=${categoryid}
         `;
     const FoodlistRow = await connection.query(FoodlistQuery);
     return FoodlistRow;
 }
 
 
-async function updateFood(connection, id, userIdx, title, content, image, price, star, sell, getCategoryId, date) { 
+async function updateFood(connection, id, title, content, image, price, star, sell, categoryid) { 
     const updateFoodQuery = `
         UPDATE food
-            SET userid = ?
-            date = ?,
+            SET
             title = ?,
             content = ?,
-            price = ?,
-            star =?,
-            sell = ?,
             image = ?,
+            price =?,
+            star = ?,
+            sell = ?,
             categoryid = ?
         WHERE id = ${id};
     `;
     const updateFoodRow = await connection.query( 
         updateFoodQuery,
-        [userIdx, title, content, image, price, star, sell, getCategoryId, date] 
+        [title, content, image, price, star, sell, categoryid] 
     );
 
     return updateFoodRow; 
@@ -92,5 +78,5 @@ async function deleteFood(connection,id){
 
 
 module.exports = {
-    changeTitle2Id, createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood
+    createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood
 };

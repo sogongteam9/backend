@@ -1,11 +1,11 @@
 
 // 장바구니 추가하기
 async function addCart(connection, foodid, userid, count){
+    console.log(foodid, count);
     const addCartQuery = `
     INSERT INTO cart(userid, foodid, count)
-    VALUES (?, ?, ?); 
-    `
-    const addCartRow = await connection.query(addCartQuery, [ userid, foodid, count]);
+    VALUES (?, ?, ?)`; 
+    const addCartRow = await connection.query(addCartQuery, [userid, foodid, count]);
 
     return addCartRow;
 }
@@ -24,11 +24,11 @@ async function cartList(connection, userid){
 // 장바구니 가격 계산하기
 async function calcCart(connection, userid){
     const calcCartQuery = `
-        SELECT f.price*c.count
+        SELECT sum(f.price*c.count)
         FROM food f JOIN cart c
         ON f.id = c.foodid
         WHERE c.userid = ?`;
-    const calcCartRow = await connection.query(getCartListQuery, userid);
+    const calcCartRow = await connection.query(calcCartQuery, userid);
 
     return calcCartRow;
 }

@@ -4,14 +4,15 @@ const {pool} =require("../../../config/database");
 const baseResponseStatus = require("../../../config/baseResponseStatus");
 
 
-exports.createFood = async function(userIdx, title, content, image, price, star, sell, getCategoryId, date){
+exports.createFood = async function(userIdx, title, content, image, price, star, sell, categoryid){
     try{
-        const connetion = await pool.getConnection(async (conn) => conn);
-        await postDao.createFood(connetion, userIdx, title, content, image, price, star, sell, getCategoryId, date);
+        const connection = await pool.getConnection(async (conn) => conn);
+        await postDao.createFood(connection, userIdx, title, content, image, price, star, sell, categoryid);
 
         connection.release();
-    }catch(err){
         return response(baseResponseStatus.SUCCESS);
+    }catch(err){
+        return response(baseResponseStatus.DB_ERROR);
     }
 
 }
@@ -27,7 +28,7 @@ exports.updateFood = async function(id, date, title, content, price, star, sell)
 
 
     } catch (err) {
-        return errResponse(baseResponseStatus.DB_ERROR);
+        return response(baseResponseStatus.DB_ERROR);
     }
 }
 
@@ -41,6 +42,6 @@ exports.deleteFood = async function(id){
         return response(baseResponseStatus.SUCCESS); 
 
     } catch (err) {
-        return errResponse(baseResponseStatus.DB_ERROR);
+        return response(baseResponseStatus.DB_ERROR);
     }
 }

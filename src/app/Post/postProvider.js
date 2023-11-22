@@ -18,14 +18,6 @@ exports.getFood = async function(id){
     return result[0];
 }
 
-// 카테고리 이름 아이디로 변경
-exports.changeTitle2Id = async function (category) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const result = await postDao.changeTitle2Id(changeTitle2Id, category);
-    connection.release();
-    
-    return result;
-}
 
 
 // 음식 있는지 확인
