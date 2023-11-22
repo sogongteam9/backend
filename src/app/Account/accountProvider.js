@@ -16,3 +16,11 @@ exports.returnNum = async function (cartid, userid) {
     connection.release();
     return result;
 };
+
+// adminpage 주문 리스트 출력
+exports.orderList = async function (email){
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await accountDao.orderList(connection,email);
+    connection.release();
+    return result;
+};

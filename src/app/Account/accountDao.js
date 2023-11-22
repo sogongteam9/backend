@@ -21,6 +21,17 @@ async function returnNum(connection, cartid, userId) {
 }
 
 
+// admin페이지 - 주문출력
+async function orderList(connection) {
+    const selectOrderListQuery = `
+                  SELECT *
+                  FROM account;
+                  `;
+    const [orderRows] = await connection.query(selectOrderListQuery);
+    return orderRows;
+};
+  
+
 module.exports = {
-    addAccount, returnNum
+    addAccount, returnNum, orderList
 };

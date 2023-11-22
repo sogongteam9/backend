@@ -24,3 +24,5 @@ exports.calcCart = async function (userIdx){
     connection.release();
     return result;
 }
+
+
