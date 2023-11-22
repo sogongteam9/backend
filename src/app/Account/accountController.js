@@ -48,7 +48,7 @@ exports.getOrderList  = async function (req, res){
   const userid=req.verifiedToken.userId;
 
   email = await userProvider.adminCheck(userid);
-console.log(email);
+
   if( email.email !=='admin@duksung.ac.kr'){
     return res.send(baseResponse.USER_IS_NOT_EXPERT);
   }

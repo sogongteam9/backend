@@ -91,5 +91,5 @@ async function selectMyComment(connection, userid) {
 
 
 module.exports = {
-  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarAvg, getStarCount, selectMyComment
+  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarCount, selectMyComment
 }
