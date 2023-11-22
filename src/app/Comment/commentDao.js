@@ -63,13 +63,6 @@ async function deleteComment(connection,commentid){
 }
 
 
-//별점 평균 반환
-async function getStarAvg(connection,postid){
-  const result = await connection.query(
-    `SELECT AVG(star) AS avgStar FROM comment WHERE postid = ?`,[postid]
-  )
-  return result[0];
-}
 
 //별점 개수 반환
 async function getStarCount(connection,postid){

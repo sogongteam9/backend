@@ -27,13 +27,6 @@ exports.getCommentWriter = async function(commentid){
   return result;
 }
 
-// 별점 평균 반환
-exports.getStarAvg = async function(postid){
-  const connection = await pool.getConnection(async (conn) => conn);
-  const result = await commentDao.getStarAvg(connection,postid);
-  connection.release();
-  return result;
-}
 
 // 별점 개수 반환
 exports.getStarAvg = async function(postid){
