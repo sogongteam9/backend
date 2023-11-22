@@ -26,7 +26,7 @@ module.exports = {
     SIGNIN_EMAIL_ERROR_TYPE : { "isSuccess": false, "code": 400, "message":"이메일을 형식을 정확하게 입력해주세요." },
     SIGNIN_PASSWORD_EMPTY : { "isSuccess": false, "code": 400, "message": "비밀번호를 입력 해주세요." },
 
-    USER_IS_NOT_EXPERT: { "isSuccess": false, "code": 400, "message": "전문가가 아니기 때문에 포스트를 올릴 수 없습니다." },
+    USER_IS_NOT_EXPERT: { "isSuccess": false, "code": 400, "message": "전문가가 아닙니다." },
     USER_USERID_EMPTY : { "isSuccess": false, "code": 400, "message": "userId를 입력해주세요." },
     USER_USERID_NOT_EXIST : { "isSuccess": false, "code": 404, "message": "해당 회원이 존재하지 않습니다." },
 

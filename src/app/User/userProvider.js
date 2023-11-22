@@ -42,6 +42,15 @@ exports.editCheck = async function (id,hashedPassword) {
 };
 
 
+// id받고 email반환
+exports.adminCheck = async function (id) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const adminCheckResult = await userDao.selectUserAdmin(connection, id);
+  connection.release();
+
+  return adminCheckResult[0];
+};
+
 // exports.accountCheck = async function (email) {
 //   const connection = await pool.getConnection(async (conn) => conn);
 //   const userAccountResult = await userDao.selectUserAccount(connection, email);

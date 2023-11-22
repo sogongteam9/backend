@@ -89,6 +89,15 @@ async function updateUserInfo(connection, id, editUserInfoParams) {
   return updateUserRow[0];
 }
 
+async function selectUserAdmin(connection, id) {
+  const expertQuery = `
+  SELECT email
+  FROM user 
+  WHERE id = ${id}`;
+  const updateUserRow = await connection.query(expertQuery);
+  return updateUserRow[0];
+}
+
 
 module.exports = {
   selectUser,
@@ -98,4 +107,5 @@ module.exports = {
   loginCheck,
   editCheck,
   updateUserInfo,
+  selectUserAdmin
 };
