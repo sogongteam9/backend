@@ -5,7 +5,7 @@ const { response, errResponse } = require("../../../config/response");
 
 //카테고리 리스트
 exports.getCategoryList  = async function (req, res){ 
-        const result = await categoryProvider.getCategoryList();
+    const result = await categoryProvider.getCategoryList();
     return res.send(result);
 };
 

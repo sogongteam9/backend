@@ -23,6 +23,8 @@ module.exports = function () {
     require('../src/app/Comment/commentRoute')(app);
     require('../src/app/Category/categoryRoute')(app);
     require('../src/app/Cart/cartRoute')(app);
+    require('../src/app/Account/accountRoute')(app);
+
 
     return app;
 };

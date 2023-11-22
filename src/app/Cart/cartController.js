@@ -1,20 +1,17 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const postController = require("../Post/postController");
-const postProvider = require("../Post/postProvider");
 const cartProvider = require("../Cart/cartProvider");
 const cartService = require("../Cart/cartService");
 const userProvider = require("../User/userProvider")
 const baseResponse = require("../../../config/baseResponseStatus");
 const { response, errResponse } = require("../../../config/response");
-const {deleteImageFromS3} = require("../../../config/s3Uploader");
 const multer = require("multer");
 
 
   //장바구니 추가하기
 exports.addCart = async function(req,res){
-    const foodid=req.params.id;
-    const count = await req.body;
-    console.log(foodid, count);
+    const foodid= req.params.id;
+    const {count} = await req.body;
+    
     
     if(!count){
         return res.send(baseResponse.COUNT_NOT_EXIST); //"수량을 입력해 주세요"
@@ -33,6 +30,7 @@ exports.addCart = async function(req,res){
     }
 
     const response = await cartService.addCart( foodid, userIdx, count);
+    return res.send(response);
 }
 
 // 장바구니 내역보기
@@ -58,7 +56,7 @@ exports.cartDelete = async function (req, res) {
     }
 
     const result = await cartService.deleteCart(id);
-    return res.send(response(baseResponse.SUCCESS, result));
+    return res.send(result);
 };
 
 // 장바구니 가격 계산하기
@@ -70,5 +68,5 @@ exports.getcalcCart = async function (req, res) {
     }
 
     const result = await cartProvider.calcCart(userIdx);
-    return res.send(response(baseResponse.SUCCESS, result));
+    return res.send(result);
 };

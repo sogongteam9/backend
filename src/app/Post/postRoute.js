@@ -8,9 +8,9 @@ module.exports = function(app){
     //food생성
     app.post('/app/foodcreate', jwtMiddleware, imageUploader_post.single("image"),  post.foodCreate);
     //food 카테고리별로 조회
-    app.get('/app/getfood/:categoryid', jwtMiddleware, post.getFoodList);
+    app.get('/app/getcategoryfood/:categoryid', post.getFoodList);
     //특정 푸드 조회
-    app.get('/app/getfood/:id', jwtMiddleware, post.getFood);
+    app.get('/app/getfood/:id', post.getFood);
     //food 수정
     app.put('/app/foodupdate/:id', jwtMiddleware,  imageUploader_post.single("image"), post.foodUpdate);
     //food 삭제
