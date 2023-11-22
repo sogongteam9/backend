@@ -18,7 +18,13 @@ exports.getFood = async function(id){
     return result[0];
 }
 
-
+// 별점 개수 반환
+exports.getStarAvg = async function(foodid){
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await postDao.getStarAvg(connection, foodid);
+    connection.release();
+    return result;
+}
 
 // 음식 있는지 확인
 exports.getFoodIsExist = async function (id) {
