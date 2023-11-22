@@ -41,4 +41,18 @@ exports.returnNum = async function(req,res){
 }
 
 
+// 마이페이지(admin) - 주문 목록 확인
+exports.getOrderList  = async function (req, res){
 
+  // 사용자 user_id 로 id 가져오기 -> 변수에 저장
+  const userid=req.verifiedToken.userId;
+
+  email = await userProvider.adminCheck(userid);
+console.log(email);
+  if( email.email !=='admin@duksung.ac.kr'){
+    return res.send(baseResponse.USER_IS_NOT_EXPERT);
+  }
+
+  const orderListResult = await accountProvider.orderList(email);
+    return res.send(response(baseResponse.SUCCESS, orderListResult));
+};

@@ -24,8 +24,12 @@ async function returnNum(connection, cartid, userId) {
 // admin페이지 - 주문출력
 async function orderList(connection) {
     const selectOrderListQuery = `
-                  SELECT *
-                  FROM account;
+    SELECT account.id AS "no", account.totalprice, user.nickname, food.title AS food_title
+    FROM account
+    INNER JOIN user ON account.userid = user.id
+    INNER JOIN cart ON account.cartid = cart.id
+    INNER JOIN food ON cart.foodid = food.id;
+    
                   `;
     const [orderRows] = await connection.query(selectOrderListQuery);
     return orderRows;

@@ -6,5 +6,7 @@ module.exports = function(app){
     app.post('/app/addAccount/:id',jwtMiddleware, account.addAccount);
     //번호표 반환
     app.get('/app/returnNum/:id',jwtMiddleware, account.returnNum);
+    //mypage(adminpage) - admin 주문 목록 출력
+    app.get("/app/adminpage",jwtMiddleware, account.getOrderList);
 
 }
