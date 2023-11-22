@@ -30,11 +30,29 @@ async function getFood(connection, id){
         WHERE id = ?`;
     const getFoodRow = await connection.query(getFoodQuery, id);
 
-    //리뷰도 가지고 와야해
-
     return getFoodRow[0]; 
 }
 
+//별점 평균 반환
+async function getStarAvg(connection, foodid){
+    try {
+        const result = await connection.query(
+            `SELECT AVG(star) AS avg_star FROM comment WHERE foodid = ?`, foodid
+        );
+        console.log("Query result:", result[0]);
+        
+        if (result[0]) {
+            return result[0];
+        } else {
+            console.log("No comments found for foodid:", foodid);
+            return 0;
+        }
+    } catch (error) {
+        console.error(error);
+        // throw error; // 에러를 던지지 않고 그냥 반환
+        return 0;
+    }
+}
 
 async function Foodlist(connection, categoryid){
     const FoodlistQuery = `
@@ -78,5 +96,5 @@ async function deleteFood(connection,id){
 
 
 module.exports = {
-    createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood
+    createFood, getFoodIsExist, getFood,Foodlist,updateFood,deleteFood, getStarAvg 
 };

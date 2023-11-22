@@ -25,13 +25,11 @@ exports.foodCreate = async function(req,res){
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
     const userIdx = req.verifiedToken.userId;
     if(!userIdx){
-        await deleteImages(req.files);
         return res.send(baseResponse.USER_USERID_NOT_EXIST); //"사용자가 없습니다."
     }
 
      //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
     if(userIdx != 3){
-        await deleteImages(req.files);
         return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 포스트를 올릴 수 없습니다.",
     }
 
@@ -70,7 +68,10 @@ exports.getFood = async function (req, res){
 exports.foodUpdate= async function (req, res) {
     var id = req.params.id;
     const {title, categoryid, content, price, sell} = await req.body;
-    var star=commentProvider.getStarAvg;
+    var star = await postProvider.getStarAvg(id);
+    star = parseInt(star[0].avg_star);
+    console.log(star);
+
     //이미지 파일 경로 
     var image;
     if (req.file) {
@@ -109,13 +110,11 @@ exports.foodDelete = async function (req, res){
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
     const userIdx = req.verifiedToken.userId;
     if(!userIdx){
-        await deleteImages(req.files);
         return res.send(baseResponse.USER_USERID_NOT_EXIST); //"사용자가 없습니다."
     }
 
      //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
     if(userIdx != 3){
-        await deleteImages(req.files);
         return res.send(baseResponse.USER_IS_NOT_EXPERT); // "전문가가 아니기 때문에 포스트를 올릴 수 없습니다.",
     }
 
