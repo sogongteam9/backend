@@ -107,6 +107,11 @@ exports.editUser = async function (id, nickname, phonenum, currentpassword, newp
           return errResponse(baseResponse.SIGNIN_PASSWORD_WRONG);
       }
 
+      // 닉네임 중복 확인
+      const nicknameRows = await userProvider.nicknameCheck(nickname);
+      if (nicknameRows.length > 0)
+          return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+
       // 정보 수정
       const newhashedPassword = await crypto
             .createHash("sha512")
