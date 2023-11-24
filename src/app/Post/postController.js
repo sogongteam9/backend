@@ -29,10 +29,10 @@ exports.foodCreate = async function(req,res){
     }
 
      //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
-     email = await userProvider.adminCheck(userIdx);
-     if( email.email !=='admin@duksung.ac.kr'){
-       return res.send(baseResponse.USER_IS_NOT_EXPERT);
-     }
+    email = await userProvider.adminCheck(userIdx);
+    if( email.email !=='admin@duksung.ac.kr'){
+    return res.send(baseResponse.USER_IS_NOT_EXPERT);
+    }
 
     // 필수 정보가 누락된 경우
     if(!image || !title || !categoryid || !content || !price || !sell){
@@ -88,10 +88,10 @@ exports.foodUpdate= async function (req, res) {
     }
 
      //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
-     email = await userProvider.adminCheck(userIdx);
-     if( email.email !=='admin@duksung.ac.kr'){
-       return res.send(baseResponse.USER_IS_NOT_EXPERT);
-     }
+    email = await userProvider.adminCheck(userIdx);
+    if( email.email !=='admin@duksung.ac.kr'){
+    return res.send(baseResponse.USER_IS_NOT_EXPERT);
+    }
 
     // 필수 정보가 누락된 경우
     if(!title || !categoryid || !content || !price || !sell){
@@ -116,11 +116,11 @@ exports.foodDelete = async function (req, res){
     }
 
      //전문가 여부 확인 -> 전문가가 아니면 게시 불가.
-     email = await userProvider.adminCheck(userIdx);
+    email = await userProvider.adminCheck(userIdx);
 
-     if( email.email !=='admin@duksung.ac.kr'){
-       return res.send(baseResponse.USER_IS_NOT_EXPERT);
-     }
+    if( email.email !=='admin@duksung.ac.kr'){
+    return res.send(baseResponse.USER_IS_NOT_EXPERT);
+    }
 
     const response = await postService.deleteFood(id);
 
@@ -131,9 +131,9 @@ exports.foodDelete = async function (req, res){
 exports.postSearch = async function (req, res) {
     const word = req.query.word;
     if (!word) {
-      return res.send(baseResponse.SEARCH_NULL);
+        return res.send(baseResponse.SEARCH_NULL);
     }
     const result = await postProvider.search(word);
     return res.send(response(baseResponse.SUCCESS, result));
-  };
+};
 
