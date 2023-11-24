@@ -131,9 +131,9 @@ exports.foodDelete = async function (req, res){
 exports.postSearch = async function (req, res) {
     const word = req.query.word;
     if (!word) {
-      return res.send(baseResponse.SEARCH_NULL);
+        return res.send(baseResponse.SEARCH_NULL);
     }
     const result = await postProvider.search(word);
     return res.send(response(baseResponse.SUCCESS, result));
-  };
+};
 
