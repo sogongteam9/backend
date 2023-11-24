@@ -33,7 +33,7 @@ exports.postUsers = async function (req, res) {
     if (!password)
         return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));
     // 길이 체크
-    if (password.length > 6)
+    if (password.length < 6)
         return res.send(response(baseResponse.SIGNUP_PASSWORD_LENGTH));
 
     // 휴대폰 번호

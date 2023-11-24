@@ -114,7 +114,7 @@ async function search(connection, word) {
         FROM food
         WHERE title LIKE ? OR content LIKE ?
     `;
-    const searchTerm = `%${word}%`; // '%'는 와일드카드로서 어떤 문자열도 매칭되도록 해줍니다.
+    const searchTerm = `%${word}%`; 
     const [poseid_result] = await connection.query(query, [searchTerm,searchTerm]);
     console.log(poseid_result);
     return poseid_result
