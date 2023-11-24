@@ -18,6 +18,14 @@ exports.nicknameCheck = async function (nickname) {
 
   return nicknameCheckResult;
 };
+//회원정보수정에서사용 - 수정하는 유저 아이디의 유저 닉네임 반환
+exports.useridNicknameCheck = async function (userid) {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const nicknameCheckResult = await userDao.selectIdNickname(connection, userid);
+  connection.release();
+
+  return nicknameCheckResult;
+};
 
 exports.loginCheck = async function (selectUserPasswordParams) { //사용자아이디와 암호화된 비번 포함하는 배열
   const connection = await pool.getConnection(async (conn) => conn);

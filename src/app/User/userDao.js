@@ -30,6 +30,16 @@ async function selectUserNickname(connection, nickname) {
   return nicknameRows;
 }
 
+//현재 닉네임이면 오류 반환안되게 하기 위해 현재 user의 nickname반환하기
+async function selectIdNickname(connection, userid) {
+  const selectUserNicknameQuery = `
+                SELECT nickname 
+                FROM user
+                WHERE id = ?;
+                `;
+  const [nicknameRows] = await connection.query(selectUserNicknameQuery, userid);
+  return nicknameRows;
+}
 
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {
@@ -107,5 +117,6 @@ module.exports = {
   loginCheck,
   editCheck,
   updateUserInfo,
-  selectUserAdmin
+  selectUserAdmin,
+  selectIdNickname
 };
