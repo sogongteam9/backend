@@ -29,8 +29,20 @@ async function getFood(connection, id){
         FROM food
         WHERE id = ?`;
     const getFoodRow = await connection.query(getFoodQuery, id);
+    const getStarQuery = `SELECT star, COUNT(*) AS starCount
+    FROM comment
+    WHERE foodid = ?
+    GROUP BY star
+    ORDER BY star;
+    `;
+    const getStarRow = await connection.query(getStarQuery, id);
 
-    return getFoodRow[0]; 
+    return [
+        {
+            getFood: getFoodRow[0],
+            getstar: getStarRow[0],
+        },
+    ];
 }
 
 //별점 평균 반환
@@ -98,9 +110,9 @@ async function deleteFood(connection,id){
 async function search(connection, word) {
     // pose_id 불러오기
     const query = `
-      SELECT DISTINCT *
-      FROM food
-      WHERE title LIKE ? OR content LIKE ?
+        SELECT DISTINCT *
+        FROM food
+        WHERE title LIKE ? OR content LIKE ?
     `;
     const searchTerm = `%${word}%`; 
     const [poseid_result] = await connection.query(query, [searchTerm,searchTerm]);
