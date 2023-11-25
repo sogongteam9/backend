@@ -82,14 +82,11 @@ exports.patchUsers = async function (req, res) {
 
     // jwt - userId, path variable :userId
 
-    const userIdFromJWT = req.verifiedToken.userId
+    const userId = req.verifiedToken.userId
 
-    const userId = req.params.userId;
     const {nickname, phonenum, currentpassword, newpassword} = req.body;
 
-    if (userIdFromJWT != userId) {
-        res.send(errResponse(baseResponse.USER_ID_NOT_MATCH));
-    } else {
+    
         if (!nickname) return res.send(errResponse(baseResponse.USER_NICKNAME_EMPTY));
         if (!phonenum) return res.send(errResponse(baseResponse.USER_PHONENUM_EMPTY));
         if (!currentpassword) return res.send(errResponse(baseResponse.USER_PASSWORD_EMPTY));
@@ -97,7 +94,6 @@ exports.patchUsers = async function (req, res) {
 
         const editUserInfo = await userService.editUser(userId, nickname, phonenum, currentpassword, newpassword)
         return res.send(editUserInfo);
-    }
 };
 
 

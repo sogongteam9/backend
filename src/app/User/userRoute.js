@@ -9,7 +9,7 @@ module.exports = function(app){
     app.post('/app/login', user.login);
 
     // 마이페이지 - 회원 정보 수정 API (JWT 검증 및 Validation - 메소드 체이닝 방식으로 jwtMiddleware 사용)
-    app.patch('/app/mypage/:userId', jwtMiddleware, user.patchUsers)
+    app.patch('/app/mypage', jwtMiddleware, user.patchUsers)
 
 
 
