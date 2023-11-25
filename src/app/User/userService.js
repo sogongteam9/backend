@@ -80,7 +80,7 @@ exports.postSignIn = async function (email, password) {
       );
   
       return response(baseResponse.SUCCESS, { //로그인 성공 시 성공상태코드, 사용자 아이디, JWT토큰 반환
-        userId: Rows[0].userid,
+        userId: Rows[0].id,
         jwt: token,
       });
     } catch (err) {
