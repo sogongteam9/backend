@@ -69,6 +69,19 @@ exports.patchComment = async function (req, res) {
     } else {
         imageURL = null;
     }
+    
+  // 댓글이 있는지 확인 
+  const isCommentExist = await commentProvider.getCommentIsExists(commentid);
+  if(isCommentExist.length <=0){
+      return res.send(baseResponse.COMMENT_NOT_EXIST);
+  }
+
+  //내가 쓴 댓글인지 확인
+  const writer = await commentProvider.getCommentWriter(commentid);
+  console.log("댓글 작성 유저id :"+writer[0].userid + "현재 유저id :" + userid);
+  if(writer[0].userid!=userid){
+    return res.send(baseResponse.COMMENT_DELETE_ERROR);
+  }
 
    // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
   const date = await moment().format('YYYY-MM-DD HH:mm:ss');
@@ -105,7 +118,7 @@ exports.deleteComment= async function(req,res){
 
   //내가 쓴 댓글인지 확인
   const writer = await commentProvider.getCommentWriter(commentid);
-  console.log(writer[0].userid);
+  console.log("댓글 작성 유저id :"+writer[0].userid + "현재 유저id :"+ user_id);
   if(writer[0].userid!=user_id){
     return res.send(baseResponse.COMMENT_DELETE_ERROR);
   }
