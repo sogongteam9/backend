@@ -16,7 +16,7 @@ async function createComment(connection,content,star,imageURL,date,userid,postid
 // 게시글 별 모든 댓글 조회
 async function selectComment(connection,postid) {
   const selectCommentListQuery = `
-                SELECT u.nickname, c.content, c.star, c.image, c.date
+                SELECT u.nickname, c.content, c.star, c.image, DATE_FORMAT(c.date, '%Y-%m-%d %H:%i:%s') AS date
                 FROM comment c
                 INNER JOIN user u ON c.userid = u.id
                 WHERE c.foodid = ?;
@@ -26,13 +26,12 @@ async function selectComment(connection,postid) {
 }
 
 //댓글 수정
-async function updateCommentInfo(connection, content,star,imageURL,date,userid,postid,commentid) {
-  console.log(content,star,imageURL,date,userid,postid,commentid)
+async function updateCommentInfo(connection, content,star,imageURL,date,userid,commentid) {
   const updateCommentQuery = `
   UPDATE comment
   SET content = ?, star = ?, image = ?, date = ?
-  WHERE userid = ? AND foodid = ? AND id = ?;`;
-  const updateCommentRow = await connection.query(updateCommentQuery, [content,star,imageURL,date,userid,postid,commentid]);
+  WHERE userid = ? AND id = ?;`;
+  const updateCommentRow = await connection.query(updateCommentQuery, [content,star,imageURL,date,userid,commentid]);
   return updateCommentRow[0];
 }
 
@@ -80,7 +79,7 @@ async function getStarCount(connection,postid){
 // 마이페이지 - 내가 쓴 댓글 확인
 async function selectMyComment(connection, userid) {
   const selectCommentListQuery = `
-                SELECT u.nickname, c.content, c.star, c.image, c.date
+                SELECT u.nickname, c.content, c.star, c.image, DATE_FORMAT(c.date, '%Y-%m-%d %H:%i:%s') AS date
                 FROM comment c
                 INNER JOIN user u ON c.userid = u.id
                 WHERE c.userid = ${userid};

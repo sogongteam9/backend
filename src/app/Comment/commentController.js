@@ -12,7 +12,7 @@ exports.createComment = async function (req, res){
   const {
     content,star
   } = await req.body;
-
+  
   // 이미지
   var imageURL;
     if (req.file) {
@@ -29,7 +29,7 @@ exports.createComment = async function (req, res){
   
   // 필수 정보가 누락된 경우
   if(!content || !star){
-    return res.send("필수정보 누락"); 
+    return res.send("내용 혹은 별점을 작성하지 않았습니다."); 
   }
 
   // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
@@ -56,11 +56,10 @@ exports.getCommentList  = async function (req, res){
 exports.patchComment = async function (req, res) {
 
   // jwt - userId, path variable :userId
-  
 
   const userid = req.verifiedToken.userId
   const {content,star} = await req.body;
-  const postid=req.params.postId; // 게시글 id
+ 
   const commentid=req.params.commentId; // 댓글 id
   
   // 이미지
@@ -74,11 +73,12 @@ exports.patchComment = async function (req, res) {
    // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
   const date = await moment().format('YYYY-MM-DD HH:mm:ss');
 
+  // 필수 정보가 누락된 경우
   if(!content || !star){
-    return res.send("필수정보 누락"); 
+    return res.send("내용 혹은 별점을 작성하지 않았습니다."); 
   }
 
-      const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,postid,commentid)
+      const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,commentid)
       return res.send(editCommentInfo);
 };
 
@@ -87,7 +87,6 @@ exports.patchComment = async function (req, res) {
 exports.deleteComment= async function(req,res){
   
   const user_id = req.verifiedToken.userId
-  const postid=req.params.postId; // 게시글 id
   const commentid=req.params.commentId; // 댓글 id
   
   // 이미지
