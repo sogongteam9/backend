@@ -119,7 +119,7 @@ exports.deleteComment= async function(req,res){
 exports.myComment  = async function (req, res){
 
   // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-  const userid=req.params.userId;
+  const userid=req.verifiedToken.userId;
 
   const commentListResult = await commentProvider.getMyComment(userid);
     return res.send(response(baseResponse.SUCCESS, commentListResult));

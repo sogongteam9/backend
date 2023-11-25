@@ -16,7 +16,7 @@ module.exports = function(app){
     app.get("/app/deletecomment/:commentId",jwtMiddleware, comment.deleteComment);
 
     // 마이페이지 - 자신이 작성한 댓글 목록 확인
-    app.get("/app/mypage/:userId",jwtMiddleware, comment.myComment)
+    app.get("/app/mypage",jwtMiddleware, comment.myComment)
 
     
 };
