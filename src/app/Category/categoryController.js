@@ -12,7 +12,6 @@ exports.getCategoryList  = async function (req, res){
 //카테고리 가져오기
 exports.getCategory = async function (req, res){ 
     var id = req.params.id; 
-    console.log(id);
     const result = await categoryProvider.getCategory(id);
     return res.send(result);
 };
