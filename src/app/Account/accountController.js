@@ -23,6 +23,22 @@ exports.addAccount = async function(req,res){
     return res.send(response);
 }
 
+// 주문 내역보기
+exports.accountlist = async function (req, res) {
+  // userid 가져오기
+  const userIdx = req.verifiedToken.userId;
+  if (!userIdx) {
+    return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
+  }
+
+  var foodid = await accountProvider.getFoodid(userIdx);
+  foodid = parseInt(foodid[0].foodid);
+  console.log(foodid);
+  const result = await accountProvider.accountlist(userIdx, foodid);
+  return res.send(response(baseResponse.SUCCESS, result));
+};
+
+
 
   //주문 번호 반환하기
 exports.returnNum = async function(req,res){
