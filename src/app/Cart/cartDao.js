@@ -59,9 +59,7 @@ async function calcCart(connection, userid){
 //장바구니 삭제하기
 async function deleteCart(connection,id){
     const deleteCartQuery = `DELETE FROM cart WHERE id = ${id};`;
-    const deleteCartRow = await connection.query(
-        deleteCartQuery
-    );
+    const deleteCartRow = await connection.query(deleteCartQuery);
     return deleteCartRow; 
 }
 

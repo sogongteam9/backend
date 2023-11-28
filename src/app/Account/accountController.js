@@ -32,6 +32,7 @@ exports.accountlist = async function (req, res) {
   }
 
   var foodid = await accountProvider.getFoodid(userIdx);
+  
   foodid = parseInt(foodid[0].foodid);
   console.log(foodid);
   const result = await accountProvider.accountlist(userIdx, foodid);
