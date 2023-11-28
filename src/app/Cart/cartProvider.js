@@ -2,9 +2,16 @@ const cartDao = require("../Cart/cartDao");
 const {pool} =require("../../../config/database");
 
 // 장바구니 내역 보기
-exports.cartList = async function (userid) {
+exports.cartList = async function (userid, foodid) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const result = await cartDao.cartList(connection, userid);
+    const result = await cartDao.cartList(connection, userid, foodid);
+    connection.release();
+    return result;
+};
+// foodid 구하기
+exports.getFoodid = async function (userid) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await cartDao.getFoodId(connection, userid);
     connection.release();
     return result;
 };
