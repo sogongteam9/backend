@@ -42,8 +42,13 @@ exports.getcartList = async function (req, res) {
     }
 
     var foodid = await cartProvider.getFoodid(userIdx);
-    foodid = parseInt(foodid[0].foodid);
     console.log(foodid);
+    if (foodid && foodid.length > 0) {
+      foodid = parseInt(foodid[0].foodid);
+    } else {
+      return res.send(response(baseResponse.SUCCESS, []));
+    }
+    
     const result = await cartProvider.cartList(userIdx, foodid);
     return res.send(response(baseResponse.SUCCESS, result));
 };
