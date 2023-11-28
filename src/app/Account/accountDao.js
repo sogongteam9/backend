@@ -9,6 +9,40 @@ async function addAccount(connection, cartid, userId, totalprice) {
     return result;
 }
 
+
+// 장바구니 조회하기
+async function accountlist(connection, userid, foodid){
+    const getCountQuery = `
+        SELECT count
+        FROM cart
+        WHERE userid = ?`;
+    const getCountRow = await connection.query(getCountQuery, [userid]);
+    console.log(foodid);
+    const getFoodNameQuery = `
+        SELECT image, title, price
+        FROM food
+        WHERE id = ?`;
+    const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);
+    console.log(getFoodNameRow[0]);
+
+    return [
+        {
+            getFoodName: getFoodNameRow[0][0],
+            getCount: getCountRow[0],
+        },
+    ];
+}
+
+async function getFoodId(connection, userid){
+    const getFoodidQuery = `
+        SELECT foodid
+        FROM cart
+        WHERE userid = ?`;
+    const getFoodid = await connection.query(getFoodidQuery, userid);
+    return getFoodid[0];
+}
+
+
 //번호표 반환
 async function returnNum(connection, cartid, userId) {
     const result = await connection.query(
@@ -37,5 +71,5 @@ async function orderList(connection) {
   
 
 module.exports = {
-    addAccount, returnNum, orderList
+    addAccount, returnNum, orderList, accountlist, getFoodId
 };

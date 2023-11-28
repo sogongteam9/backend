@@ -20,7 +20,7 @@ async function cartList(connection, userid, foodid){
     const getCountRow = await connection.query(getCountQuery, [userid]);
     console.log(foodid);
     const getFoodNameQuery = `
-        SELECT title
+        SELECT image, title, price
         FROM food
         WHERE id = ?`;
     const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);

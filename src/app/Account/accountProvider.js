@@ -9,6 +9,21 @@ exports.addAccount = async function (cartid, userId, totalprice) {
     return result;
 };
 
+// 장바구니 내역 보기
+exports.accountlist = async function (userid, foodid) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await accountDao.accountlist(connection, userid, foodid);
+    connection.release();
+    return result;
+};
+// foodid 구하기
+exports.getFoodid = async function (userid) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await accountDao.getFoodId(connection, userid);
+    connection.release();
+    return result;
+};
+
 // 번호표 반환
 exports.returnNum = async function (cartid, userid) {
     const connection = await pool.getConnection(async (conn) => conn);
