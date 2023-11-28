@@ -14,10 +14,11 @@ async function addCart(connection, foodid, userid, count){
 // 장바구니 조회하기
 async function cartList(connection, userid, foodid){
     const getCountQuery = `
-        SELECT count
+        SELECT count, id
         FROM cart
         WHERE userid = ?`;
     const getCountRow = await connection.query(getCountQuery, [userid]);
+    console.log(getCountRow[0]);
     console.log(foodid);
     const getFoodNameQuery = `
         SELECT image, title, price
