@@ -39,6 +39,12 @@ exports.createComment = async function (req, res){
     content,star,imageURL,date,userid,postid
   );
 
+  var starAvg = await commentProvider.getStarAvg(postid);
+  starAvg = parseFloat(starAvg[0].avg_star);
+  console.log("starAvg:", starAvg);
+
+  await commentService.updateFoodstar(postid,starAvg);
+
   return res.send(response);
 };
 

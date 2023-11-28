@@ -54,3 +54,19 @@ exports.deleteComment = async function (commentid){
     return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+// 게시글 별점 평균 update
+exports.updateFoodstar = async function(postid,star){
+  try {
+      const connection = await pool.getConnection(async (conn) => conn);
+      await commentDao.updateFoodstar(connection, postid,star); //정보를 데이터베이스에 삽입
+      
+      connection.release();
+      
+      return response(baseResponse.SUCCESS); 
+
+
+  } catch (err) {
+      return response(baseResponse.DB_ERROR);
+  }
+}

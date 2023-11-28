@@ -68,13 +68,34 @@ async function getStarCount(connection,postid){
   const result = await connection.query(
     `SELECT star, COUNT(*) AS starCount
     FROM comment
-    WHERE postid = ?
+    WHERE foodid = ?
     GROUP BY star
     ORDER BY star;
     `,[postid]
   )
   return result[0];
 }
+
+//별점 평균 반환
+async function getStarAvg(connection, foodid){
+  try {
+      const result = await connection.query(
+          `SELECT AVG(star) AS avg_star FROM comment WHERE foodid = ?`, foodid
+      );
+      
+      
+      if (result[0]) {
+          return result[0];
+      } else {
+          console.log("No comments found for foodid:", foodid);
+          return 0;
+      }
+  } catch (error) {
+      console.error(error);
+      // throw error; // 에러를 던지지 않고 그냥 반환
+      return 0;
+  }
+};
 
 // 마이페이지 - 내가 쓴 댓글 확인
 async function selectMyComment(connection, userid) {
@@ -86,9 +107,26 @@ async function selectMyComment(connection, userid) {
                 `;
   const [commentRows] = await connection.query(selectCommentListQuery);
   return commentRows;
-}
+};
+
+// 게시글 별점 평균 update
+async function updateFoodstar(connection,id,star) { 
+  console.log("쿼리문 star:"+star)
+  const updateFoodQuery = `
+      UPDATE food
+          SET
+          star = ?
+      WHERE id = ${id};
+  `;
+  const updateFoodRow = await connection.query( 
+      updateFoodQuery,
+      [star] 
+  );
+
+  return updateFoodRow; 
+};
 
 
 module.exports = {
-  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarCount, selectMyComment
+  createComment, selectComment, updateCommentInfo, getCommentIsExists, getCommentWriter, deleteComment, getStarCount, selectMyComment, getStarAvg, updateFoodstar
 }

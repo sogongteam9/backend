@@ -29,9 +29,17 @@ exports.getCommentWriter = async function(commentid){
 
 
 // 별점 개수 반환
-exports.getStarAvg = async function(postid){
+exports.getStarCount = async function(postid){
   const connection = await pool.getConnection(async (conn) => conn);
   const result = await commentDao.getStarCount(connection,postid);
+  connection.release();
+  return result;
+}
+
+// 별점 평균 반환
+exports.getStarAvg = async function(foodid){
+  const connection = await pool.getConnection(async (conn) => conn);
+  const result = await commentDao.getStarAvg(connection, foodid);
   connection.release();
   return result;
 }
