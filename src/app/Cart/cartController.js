@@ -41,7 +41,10 @@ exports.getcartList = async function (req, res) {
       return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
     }
 
-    const result = await cartProvider.cartList(userIdx);
+    var foodid = await cartProvider.getFoodid(userIdx);
+    foodid = parseInt(foodid[0].foodid);
+    console.log(foodid);
+    const result = await cartProvider.cartList(userIdx, foodid);
     return res.send(response(baseResponse.SUCCESS, result));
 };
 

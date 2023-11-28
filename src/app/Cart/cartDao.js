@@ -10,15 +10,37 @@ async function addCart(connection, foodid, userid, count){
     return addCartRow;
 }
 
+
 // 장바구니 조회하기
-async function cartList(connection, userid){
-    const getCartListQuery = `
-        SELECT foodid, count
+async function cartList(connection, userid, foodid){
+    const getCountQuery = `
+        SELECT count
         FROM cart
         WHERE userid = ?`;
-    const getCartListRow = await connection.query(getCartListQuery, userid);
+    const getCountRow = await connection.query(getCountQuery, [userid]);
+    console.log(foodid);
+    const getFoodNameQuery = `
+        SELECT title
+        FROM food
+        WHERE id = ?`;
+    const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);
+    console.log(getFoodNameRow[0]);
 
-    return getCartListRow;
+    return [
+        {
+            getFoodName: getFoodNameRow[0][0],
+            getCount: getCountRow[0],
+        },
+    ];
+}
+
+async function getFoodId(connection, userid){
+    const getFoodidQuery = `
+        SELECT foodid
+        FROM cart
+        WHERE userid = ?`;
+    const getFoodid = await connection.query(getFoodidQuery, userid);
+    return getFoodid[0];
 }
 
 // 장바구니 가격 계산하기
@@ -55,5 +77,5 @@ async function getCartIsExist(connection, userId, foodid) {
 
 
 module.exports = {
-    addCart, cartList, deleteCart,getCartIsExist, calcCart
+    addCart, cartList, deleteCart,getCartIsExist, calcCart, getFoodId
 };
