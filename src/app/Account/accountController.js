@@ -1,5 +1,5 @@
 const jwtMiddleware = require("../../../config/jwtMiddleware");
-const postController = require("../Account/accountController");
+const accountController = require("../Account/accountController");
 const userProvider = require("../User/userProvider")
 const accountProvider = require("../Account/accountProvider")
 const baseResponse = require("../../../config/baseResponseStatus");
