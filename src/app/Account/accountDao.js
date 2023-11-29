@@ -46,7 +46,10 @@ async function getFoodId(connection, userid){
 async function clearCart(connection, userid, cartid){
     const clearCartQuery = 'UPDATE cart SET is_cleared = true WHERE id = ? and userid=?';
     const clearCartRow = await connection.query(clearCartQuery, [cartid, userid]);
-    return clearCartRow;
+    const getclearCartQuery = 'SELECT is_cleared = true FROM cart WHERE id = ? and userid=?';
+    const getclearCartRow = await connection.query(getclearCartQuery, [cartid, userid]);
+    console.log(getclearCartRow);
+    return getclearCartRow[0];
 }
 
 //번호표 반환
