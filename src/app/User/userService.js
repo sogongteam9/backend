@@ -46,7 +46,7 @@ exports.createUser = async function (email, password, phonenum, nickname) {
     }
 };
 
-// 로그인 TODO : jtw토큰 생성하는거 하기
+// 로그인 
 exports.postSignIn = async function (email, password) {
 
     try {
@@ -80,7 +80,7 @@ exports.postSignIn = async function (email, password) {
       );
   
       return response(baseResponse.SUCCESS, { //로그인 성공 시 성공상태코드, 사용자 아이디, JWT토큰 반환
-        userId: Rows[0].userid,
+        userId: Rows[0].id,
         jwt: token,
       });
     } catch (err) {
@@ -91,7 +91,7 @@ exports.postSignIn = async function (email, password) {
 // 회원 정보 수정
 exports.editUser = async function (id, nickname, phonenum, currentpassword, newpassword) {
     try {
-        console.log(id)
+        
 
         const hashedPassword = await crypto
         .createHash("sha512")
@@ -109,7 +109,9 @@ exports.editUser = async function (id, nickname, phonenum, currentpassword, newp
 
       // 닉네임 중복 확인
       const nicknameRows = await userProvider.nicknameCheck(nickname);
-      if (nicknameRows.length > 0)
+      const currentnickname = await userProvider.useridNicknameCheck(id);
+      console.log(currentnickname[0].nickname)
+      if (nicknameRows.length > 0 && nickname !== currentnickname[0].nickname)
           return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
 
       // 정보 수정

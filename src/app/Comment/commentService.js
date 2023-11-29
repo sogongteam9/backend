@@ -28,12 +28,12 @@ exports.createComment = async function (
 };
 
 //댓글 수정
-exports.editComment = async function (content,star,imageURL,date,userid,postid,commentid) {
+exports.editComment = async function (content,star,imageURL,date,userid,commentid) {
   try {
       console.log(commentid)
 
       const connection = await pool.getConnection(async (conn) => conn);
-      const editUserResult = await commentDao.updateCommentInfo(connection, content,star,imageURL,date,userid,postid,commentid)
+      const editUserResult = await commentDao.updateCommentInfo(connection, content,star,imageURL,date,userid,commentid)
       connection.release();
 
       return response(baseResponse.SUCCESS);
@@ -54,3 +54,19 @@ exports.deleteComment = async function (commentid){
     return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+// 게시글 별점 평균 update
+exports.updateFoodstar = async function(postid,star){
+  try {
+      const connection = await pool.getConnection(async (conn) => conn);
+      await commentDao.updateFoodstar(connection, postid,star); //정보를 데이터베이스에 삽입
+      
+      connection.release();
+      
+      return response(baseResponse.SUCCESS); 
+
+
+  } catch (err) {
+      return response(baseResponse.DB_ERROR);
+  }
+}

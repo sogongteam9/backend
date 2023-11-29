@@ -12,7 +12,7 @@ exports.createComment = async function (req, res){
   const {
     content,star
   } = await req.body;
-
+  
   // 이미지
   var imageURL;
     if (req.file) {
@@ -29,7 +29,7 @@ exports.createComment = async function (req, res){
   
   // 필수 정보가 누락된 경우
   if(!content || !star){
-    return res.send("필수정보 누락"); 
+    return res.send("내용 혹은 별점을 작성하지 않았습니다."); 
   }
 
   // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
@@ -38,6 +38,12 @@ exports.createComment = async function (req, res){
   const response = await commentService.createComment(
     content,star,imageURL,date,userid,postid
   );
+
+  var starAvg = await commentProvider.getStarAvg(postid);
+  starAvg = parseFloat(starAvg[0].avg_star);
+  console.log("starAvg:", starAvg);
+
+  await commentService.updateFoodstar(postid,starAvg);
 
   return res.send(response);
 };
@@ -56,11 +62,10 @@ exports.getCommentList  = async function (req, res){
 exports.patchComment = async function (req, res) {
 
   // jwt - userId, path variable :userId
-  
 
   const userid = req.verifiedToken.userId
   const {content,star} = await req.body;
-  const postid=req.params.postId; // 게시글 id
+ 
   const commentid=req.params.commentId; // 댓글 id
   
   // 이미지
@@ -70,15 +75,29 @@ exports.patchComment = async function (req, res) {
     } else {
         imageURL = null;
     }
+    
+  // 댓글이 있는지 확인 
+  const isCommentExist = await commentProvider.getCommentIsExists(commentid);
+  if(isCommentExist.length <=0){
+      return res.send(baseResponse.COMMENT_NOT_EXIST);
+  }
+
+  //내가 쓴 댓글인지 확인
+  const writer = await commentProvider.getCommentWriter(commentid);
+  console.log("댓글 작성 유저id :"+writer[0].userid + "현재 유저id :" + userid);
+  if(writer[0].userid!=userid){
+    return res.send(baseResponse.COMMENT_DELETE_ERROR);
+  }
 
    // 현재 날짜와 시간을 DATETIME 형식의 문자열로 생성 -> 변수에 담음
   const date = await moment().format('YYYY-MM-DD HH:mm:ss');
 
+  // 필수 정보가 누락된 경우
   if(!content || !star){
-    return res.send("필수정보 누락"); 
+    return res.send("내용 혹은 별점을 작성하지 않았습니다."); 
   }
 
-      const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,postid,commentid)
+      const editCommentInfo = await commentService.editComment(content,star,imageURL,date,userid,commentid)
       return res.send(editCommentInfo);
 };
 
@@ -87,7 +106,6 @@ exports.patchComment = async function (req, res) {
 exports.deleteComment= async function(req,res){
   
   const user_id = req.verifiedToken.userId
-  const postid=req.params.postId; // 게시글 id
   const commentid=req.params.commentId; // 댓글 id
   
   // 이미지
@@ -106,7 +124,7 @@ exports.deleteComment= async function(req,res){
 
   //내가 쓴 댓글인지 확인
   const writer = await commentProvider.getCommentWriter(commentid);
-  console.log(writer[0].userid);
+  console.log("댓글 작성 유저id :"+writer[0].userid + "현재 유저id :"+ user_id);
   if(writer[0].userid!=user_id){
     return res.send(baseResponse.COMMENT_DELETE_ERROR);
   }
@@ -120,7 +138,7 @@ exports.deleteComment= async function(req,res){
 exports.myComment  = async function (req, res){
 
   // 사용자 user_id 로 id 가져오기 -> 변수에 저장
-  const userid=req.params.userId;
+  const userid=req.verifiedToken.userId;
 
   const commentListResult = await commentProvider.getMyComment(userid);
     return res.send(response(baseResponse.SUCCESS, commentListResult));
