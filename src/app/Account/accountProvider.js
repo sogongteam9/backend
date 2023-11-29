@@ -24,6 +24,14 @@ exports.getFoodid = async function (userid) {
     return result;
 };
 
+//장바구니 비우기
+exports.clearCart = async function (userid, cartid) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const result = await accountDao.clearCart(connection, userid, cartid);
+    connection.release();
+    return result;
+};
+
 // 번호표 반환
 exports.returnNum = async function (cartid, userid) {
     const connection = await pool.getConnection(async (conn) => conn);

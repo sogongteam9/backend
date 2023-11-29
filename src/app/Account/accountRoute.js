@@ -8,6 +8,8 @@ module.exports = function(app){
     app.get('/app/returnNum/:id',jwtMiddleware, account.returnNum);
     //주문 내역 보기
     app.get('/app/accountlist',jwtMiddleware, account.accountlist);
+    //결제 후 카트 삭제
+    app.post('/app/clearCart/:id',jwtMiddleware, account.clearCart);
     //mypage(adminpage) - admin 주문 목록 출력
     app.get("/app/adminpage",jwtMiddleware, account.getOrderList);
 
