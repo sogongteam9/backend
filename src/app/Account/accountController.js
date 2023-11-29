@@ -44,8 +44,7 @@ exports.accountlist = async function (req, res) {
   //주문 번호 반환하기
 exports.returnNum = async function(req,res){
     const cartid=req.params.id;
-
-    
+  
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
     const userIdx = req.verifiedToken.userId;
     if(!userIdx){
@@ -57,6 +56,19 @@ exports.returnNum = async function(req,res){
     return res.send(response);
 }
 
+//장바구니 비우기 반환하기
+exports.clearCart= async function(req,res){
+  const cartid=req.params.id;
+
+  const userIdx = req.verifiedToken.userId;
+  if(!userIdx){
+       return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
+  }
+
+  const response = await accountProvider.clearCart(userIdx, cartid);
+
+  return res.send(response);
+}
 
 // 마이페이지(admin) - 주문 목록 확인
 exports.getOrderList  = async function (req, res){

@@ -19,7 +19,7 @@ async function accountlist(connection, userid, foodid){
     const getCountRow = await connection.query(getCountQuery, [userid]);
     console.log(foodid);
     const getFoodNameQuery = `
-        SELECT image, title, price
+        SELECT image, title, price, categoryid
         FROM food
         WHERE id = ?`;
     const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);
@@ -42,6 +42,12 @@ async function getFoodId(connection, userid){
     return getFoodid[0];
 }
 
+//장바구니 비우기
+async function clearCart(connection, userid, cartid){
+    const clearCartQuery = 'UPDATE cart SET is_cleared = true WHERE id = ? and userid=?';
+    const clearCartRow = await connection.query(clearCartQuery, [cartid, userid]);
+    return clearCartRow;
+}
 
 //번호표 반환
 async function returnNum(connection, cartid, userId) {
@@ -71,5 +77,5 @@ async function orderList(connection) {
   
 
 module.exports = {
-    addAccount, returnNum, orderList, accountlist, getFoodId
+    addAccount, returnNum, orderList, accountlist, getFoodId, clearCart
 };
