@@ -20,38 +20,41 @@ exports.addCart = async function(req,res){
     // 사용자 user_id 로 id 가져오기 -> 변수에 저장
     const userIdx = req.verifiedToken.userId;
     if(!userIdx){
-       return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
+      return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
     }
 
     // cart에 있는지 확인
     const isExistInCart = await cartProvider.getCartIsExist(userIdx, foodid);
     if(isExistInCart.length > 0){
-        return res.send(baseResponse.CART_ALREADY_EXIST); //"이미 음식이 카트에 담겨있습니다."
+      return res.send(baseResponse.CART_ALREADY_EXIST); //"이미 음식이 카트에 담겨있습니다."
     }
 
     const response = await cartService.addCart( foodid, userIdx, count);
     return res.send(response);
 }
 
-// 장바구니 내역보기
+//장바구니 가져오기
 exports.getcartList = async function (req, res) {
-    // userid 가져오기
-    const userIdx = req.verifiedToken.userId;
-    if (!userIdx) {
+  // userid 가져오기
+  const userIdx = req.verifiedToken.userId;
+  if (!userIdx) {
       return res.send(baseResponse.FIND_USER_ERROR); //"사용자 정보를 가져오는데 에러가 발생 하였습니다. 다시 시도해주세요."
-    }
+  }
 
-    var foodid = await cartProvider.getFoodid(userIdx);
-    console.log(foodid);
-    if (foodid && foodid.length > 0) {
-      foodid = parseInt(foodid[0].foodid);
-    } else {
+  var foodids = await cartProvider.getFoodid(userIdx); // 여러 개의 foodid를 가져올 수 있으므로 변수명을 복수형으로 변경
+  console.log(foodids);
+  if (foodids && foodids.length > 0) {
+      // foodid를 숫자 배열로 변환
+      foodids = foodids.map(item => parseInt(item.foodid));
+  } else {
       return res.send(response(baseResponse.SUCCESS, []));
-    }
-    
-    const result = await cartProvider.cartList(userIdx, foodid);
-    return res.send(response(baseResponse.SUCCESS, result));
+  }
+  
+  const result = await cartProvider.cartList(userIdx, foodids); // foodids를 배열 형태로 전달
+  return res.send(response(baseResponse.SUCCESS, result));
 };
+
+
 
 // 장바구니 삭제하기
 exports.cartDelete = async function (req, res) {

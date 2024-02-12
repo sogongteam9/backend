@@ -12,27 +12,28 @@ async function addCart(connection, foodid, userid, count){
 
 
 // 장바구니 조회하기
-async function cartList(connection, userid, foodid){
-    const getCountQuery = `
-        SELECT count, id, is_cleared
-        FROM cart
-        WHERE userid = ?`;
-    const getCountRow = await connection.query(getCountQuery, [userid]);
-    console.log(getCountRow[0]);
-    console.log(foodid);
-    const getFoodNameQuery = `
-        SELECT image, title, price
-        FROM food
-        WHERE id = ?`;
-    const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);
-    console.log(getFoodNameRow[0]);
+async function cartList(connection, userid, foodids){
+    let resultList = [];
+    for (const foodid of foodids) {
+        const getCountQuery = `
+            SELECT count, id, is_cleared
+            FROM cart
+            WHERE userid = ? AND foodid = ? AND is_cleared = 0`;
+        const getCountRow = await connection.query(getCountQuery, [userid, foodid]);
 
-    return [
-        {
+        const getFoodNameQuery = `
+            SELECT image, title, price
+            FROM food
+            WHERE id = ?`;
+        const getFoodNameRow = await connection.query(getFoodNameQuery, [foodid]);
+
+        resultList.push({
             getFoodName: getFoodNameRow[0][0],
             getCount: getCountRow[0],
-        },
-    ];
+        });
+    }
+
+    return resultList;
 }
 
 async function getFoodId(connection, userid){
