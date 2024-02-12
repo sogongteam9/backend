@@ -2,9 +2,9 @@ const cartDao = require("../Cart/cartDao");
 const {pool} =require("../../../config/database");
 
 // 장바구니 내역 보기
-exports.cartList = async function (userid, foodid) {
+exports.cartList = async function (userid, foodids) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const result = await cartDao.cartList(connection, userid, foodid);
+    const result = await cartDao.cartList(connection, userid, foodids);
     connection.release();
     return result;
 };

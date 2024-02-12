@@ -118,7 +118,7 @@ async function search(connection, word) {
     const [poseid_result] = await connection.query(query, [searchTerm,searchTerm]);
     console.log(poseid_result);
     return poseid_result
-  }
+}
 
 
 module.exports = {
